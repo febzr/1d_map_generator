@@ -19,7 +19,7 @@ class mapWithGrade:
         for i in range(len(self.map)-1):
             if i+1:
                 if (self.map[i] - self.map[i+1] == 0):
-                    self.grade += 1
+                    self.grade += 2.5
                 if (self.map[i] - self.map[i+1] == 1):
                     self.grade += 2
                 if (self.map[i] - self.map[i+1] > 2):
@@ -42,6 +42,9 @@ class mapWithGrade:
                         self.grade -= abs(self.map[i-1] - self.map[i+1])
 
         self.grade += max(self.map) - min(self.map)
+
+        if self.grade > 0:
+            self.grade = self.grade / len(self.map)
 
         return self.grade
     
@@ -96,9 +99,9 @@ def plotMap(map):
     for i in range(20, 0, -1):
         for j in range(len(map)):
             if map[j] >= i:
-                print("██████████", end="")
+                print("##", end="")
             else:
-                print("..........", end="")
+                print("  ", end="")
         print("\n")
 
 sizeOfMap = int(input("Enter the size of the map: "))
@@ -118,15 +121,11 @@ while True:
     counter += 1
     mutationCounter += 1
     finalizationCounter += 1
-    print(f"\nGeneration: {counter}")
 
     evolveProcess(a, b, c, d, e)
 
-    print(f"Map A: {a.getMap()} - Grade: {a.getGrade()}")
-    print(f"Map B: {b.getMap()} - Grade: {b.getGrade()}")
-    print(f"Map C: {c.getMap()} - Grade: {c.getGrade()}")
-    print(f"Map D: {d.getMap()} - Grade: {d.getGrade()}")
-    print(f"Map E: {e.getMap()} - Grade: {e.getGrade()}")
+    if counter % 1500 == 0:
+        print(f"Generation {counter} - Best grade: {max(a.getGrade(), b.getGrade(), c.getGrade(), d.getGrade(), e.getGrade())}")
 
     if mutationCounter == 2:
         randomChoice = random.randint(0, 3)
@@ -178,9 +177,9 @@ while True:
                 for i in range(20, 0, -1):
                     for j in range(len(objectList[0].getMap())):
                         if objectList[0].getMap()[j] >= i:
-                            f.write("##########")
+                            f.write("##")
                         else:
-                            f.write("..........")
+                            f.write("  ")
                     f.write("\n")
                 f.write(f"\n Made by Felipe Bezerra in 2024.\n github.com/febzr\n\n")
             print(f"File {filename}.txt saved.")
